@@ -5,11 +5,14 @@
 This script is made to analyse the data output from CropMetaPop in the main genetic indices for the
 sensibility analysis
 
+I used this website for the formulas : http://www.uwyo.edu/dbmcd/popecol/maylects/fst.html
+
 @author: Baptiste Rouger
 """
 
 from os import listdir
 from os.path import isfile, join
+# from numpy import shape
 
 #Path of the folder containing the result folders
 PATH = "/home/baptiste/Bureau/OutTest/"
@@ -44,31 +47,40 @@ for folder in FOLDERS: # this will go through all subfolders
 
         ### Computes Hobs and N
         Hobs = []
+        Hexp = []
         N = []
         i = 0
         for pop in range(0, POP_NB):
             for marker in range(0, MARKERS): # that way we examinate all markers for all pops
-                HobsTable = SubTable[i:(i+COMBINATIONS)][:] # we take subsets of the replicate to
+                PopMarkTable = SubTable[i:(i+COMBINATIONS)][:] # we take subsets of the replicate to
                                                             #select only one marker from one pop
 
                 HobsPopMark = [Replicate, pop, marker] # we initiate the vector so that they have
                                                        #the number of the rep, pop and marker
+                HexpPopMark = [Replicate, pop, marker]
                 NPopMark = [Replicate, pop, marker]
 
                 # we compute the indices for every generation
-                for gen in range(4, len(HobsTable[1][:])):
+                for gen in range(4, len(PopMarkTable[1][:])):
                     NGen = 0
                     for comb in range(0, COMBINATIONS): # we compute how much individuals there is
-                        NGen += float(HobsTable[comb][gen])
-                    HobsGen = float(HobsTable[1][gen])/NGen # we compute Hobs per generation and
-                                                            #and store it in Hobs per pop and per
-                                                            #marker
+                        NGen += float(PopMarkTable[comb][gen])
+                    # we compute Hobs per generation and store it in Hobs per pop and per marker
+                    HobsGen = float(PopMarkTable[1][gen])/NGen
                     HobsPopMark.append(HobsGen)
-                    NPopMark.append(NGen) # we also store the number of individuals at the
-                                          #generation
-                Hobs.append(HobsPopMark) # we store Hobs per pop and marker in the global Hobs, as
-                                         #well as N
+# we compute Hexp per generation and store it in Hexp per pop and per marker
+                    HexpGen = pow((float(PopMarkTable[0][gen])/NGen), 2) + \
+                            pow((float(PopMarkTable[2][gen])/NGen), 2)
+                    HexpPopMark.append(HexpGen)
+
+                    # we also store the number of individuals at the generation
+                    NPopMark.append(NGen)
+                # we store Hobs per pop and marker in the global Hobs, as well as Hexp and N
+                Hobs.append(HobsPopMark)
+                Hexp.append(HexpPopMark)
                 N.append(NPopMark)
+
                 i += COMBINATIONS
-
-
+        for pop in range(0, POP_NB):
+            for marker in range(0, MARKERS):
+                print str(pop) + " " + str(marker) + "\n"
