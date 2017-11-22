@@ -35,8 +35,16 @@ for folder in FOLDERS: # this will go through all subfolders
 
     File = open(MyPathToFile, "r") # opens the file GenotypeMono.csv of the folder
 
-    for Replicate in range(0, REPLICATES): # this loop will examinate all replicates one after the
-                                           #other
+    Hobs = []
+    Hexp = []
+    N = []
+    NMeta = []
+    HobsMeta = []
+    HexpMeta = []
+    pBar = []
+    qBar = []
+# this loop will examinate all replicates one after the other
+    for Replicate in range(0, REPLICATES):
         SubTable = []
         for ligne in range(0, LINESTOGET): # we take subsets of the big file to select only the
                                            #current replicate to spare RAM
@@ -46,9 +54,6 @@ for folder in FOLDERS: # this will go through all subfolders
             SubTable.append((File.readline().strip()).split(','))
 
         ### Computes Hobs and N
-        Hobs = []
-        Hexp = []
-        N = []
         i = 0
         for pop in range(0, POP_NB):
             for marker in range(0, MARKERS): # that way we examinate all markers for all pops
@@ -68,7 +73,7 @@ for folder in FOLDERS: # this will go through all subfolders
                     # we compute Hobs per generation and store it in Hobs per pop and per marker
                     HobsGen = float(PopMarkTable[1][gen])/NGen
                     HobsPopMark.append(HobsGen)
-# we compute Hexp per generation and store it in Hexp per pop and per marker
+                    # we compute Hexp per generation and store it in Hexp per pop and per marker
                     HexpGen = pow((float(PopMarkTable[0][gen])/NGen), 2) + \
                             pow((float(PopMarkTable[2][gen])/NGen), 2)
                     HexpPopMark.append(HexpGen)
@@ -78,14 +83,17 @@ for folder in FOLDERS: # this will go through all subfolders
                 # we store Hobs per pop and marker in the global Hobs, as well as Hexp and N
                 Hobs.append(HobsPopMark)
                 Hexp.append(HexpPopMark)
-                # print HexpPopMark
                 N.append(NPopMark)
 
+
                 i += COMBINATIONS
-        print Hexp
-        # j = 0
-        HexpMeta = []
-        HobsMeta = []
+        for pop in range(0, POP_NB):
+            nMeta = [Replicate, pop]
+            for element in N[MARKERS*pop][3:]:
+                nMeta.append(element)
+            NMeta.append(nMeta)
+
+        # we mean the indices of the markers for every generation
         for pop in range(0, POP_NB):
             HexpPop = [Replicate, pop]
             HobsPop = [Replicate, pop]
@@ -100,26 +108,40 @@ for folder in FOLDERS: # this will go through all subfolders
                 HobsPop.append(hobsPop)
             HexpMeta.append(HexpPop)
             HobsMeta.append(HobsPop)
-            print HobsMeta
+
+        # print SubTable
+        # we compute pBar and qBar
+        for marker in range(0, MARKERS):
+            pBarTemp = [Replicate, marker]
+            qBarTemp = [Replicate, marker]
+            for gen in range(4, len(SubTable[1][:])):
+                sumP = 0
+                sumQ = 0
+                sumN = 0
+                for pop in range(0, POP_NB):
+                    index = COMBINATIONS*(marker + MARKERS*pop)
+                    # print index, gen
+                    # print N[index][gen]
+                    # print N[index+1][gen]
+                    sumP += 2*float(SubTable[index][gen]) + float(SubTable[index+1][gen])
+                    sumQ += 2*float(SubTable[index+2][gen]) + float(SubTable[index+1][gen])
+
+                    sumN += 2*(float(SubTable[index][gen]) + float(SubTable[index+1][gen]) +\
+                            float(SubTable[index+2][gen]))
+
+                pBarTemp.append(sumP/sumN)
+                qBarTemp.append(sumQ/sumN)
+                print sumP/sumN + sumQ/sumN
+            pBar.append(pBarTemp)
+            qBar.append(qBarTemp)
+            # print pBar
+
+        # we compute Hi
+        for pop in range(0, POP_NB):
 
 
 
-        # for pop in range(0, POP_NB):
-            # # print "Pop : " + str(pop)
-            # for marker in range(0, MARKERS):
-                # # print "Gen : " + str(gen)
-                # hexpPop = 0
-                # # print Hexp[j][:]
-                # for gen in range(3, len(Hexp[1][:])):
-                    # # print "Marker : " + str(marker)
-                    # # print str(j) + " " + str(gen) + "\n"
-                    # # print Hexp[j][gen]
-                    # hexpPop += Hexp[j][gen]/(len(Hexp[1][:]) - 3)
-                    # # print HexpPop
-                # j += 1
 
 
-        # for pop in range(0, POP_NB):
-            # print "Pop : " + str(pop)
-            # for marker in range(0, MARKERS):
-                # print Hexp[3]
+
+    # print NMeta
