@@ -131,13 +131,50 @@ for folder in FOLDERS: # this will go through all subfolders
 
                 pBarTemp.append(sumP/sumN)
                 qBarTemp.append(sumQ/sumN)
-                print sumP/sumN + sumQ/sumN
+                # print sumP/sumN + sumQ/sumN
             pBar.append(pBarTemp)
             qBar.append(qBarTemp)
             # print pBar
-
+        # print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+        # print N
         # we compute Hi
-        for pop in range(0, POP_NB):
+        # for pop in range(0, POP_NB):
+            # for marker in range(0, MARKERS):
+                # for gen in range(0, len(HobsPop[1][:]))
+                    # print
+    Hi = []
+    Hs = []
+    for replicate in range(0, REPLICATES):
+        for marker in range(0, MARKERS):
+            HiTemp = [replicate, marker]
+            HsTemp = [replicate, marker]
+            for gen in range(3, len(Hobs[1][:])):
+                sumHobsN = 0
+                sumHexpN = 0
+                sumN = 0
+                for pop in range(0, POP_NB):
+                    index = marker + MARKERS*(pop + POP_NB*replicate)
+                    sumHobsN += Hobs[index][gen]*N[index][gen]
+                    sumHexpN += Hexp[index][gen]*N[index][gen]
+                    sumN += N[index][gen]
+                HiTemp.append(sumHobsN/sumN)
+                HsTemp.append(sumHexpN/sumN)
+                # print sumHobsN/sumN
+            # print HiTemp
+            Hi.append(HiTemp)
+            Hs.append(HsTemp)
+
+    Ht = []
+    for replicate in range(0, REPLICATES):
+        for marker in range(0, MARKERS):
+            HtTemp = [replicate, marker]
+            for gen in range(0, len(pBar[1][:])):
+                index = marker + MARKERS*replicate
+                HtTemp.append(2*pBar[index][gen]*qBar[index][gen])
+            Ht.append(HtTemp)
+
+    print Ht
+
 
 
 
