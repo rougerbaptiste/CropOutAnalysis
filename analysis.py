@@ -168,12 +168,29 @@ for folder in FOLDERS: # this will go through all subfolders
     for replicate in range(0, REPLICATES):
         for marker in range(0, MARKERS):
             HtTemp = [replicate, marker]
-            for gen in range(0, len(pBar[1][:])):
-                index = marker + MARKERS*replicate
+            index = marker + MARKERS*replicate
+            for gen in range(2, len(pBar[1][:])):
                 HtTemp.append(2*pBar[index][gen]*qBar[index][gen])
             Ht.append(HtTemp)
 
-    print Ht
+    Fis = []
+    Fst = []
+    Fit = []
+    for replicate in range(0, REPLICATES):
+        for marker in range(0, MARKERS):
+            FisTemp = [replicate, marker]
+            FstTemp = [replicate, marker]
+            FitTemp = [replicate, marker]
+            index = marker + MARKERS*replicate
+            for gen in range(2, len(Hs[1][:])):
+                FisTemp.append((Hs[index][gen]-Hi[index][gen])/Hs[index][gen])
+                FstTemp.append((Ht[index][gen]-Hs[index][gen])/Ht[index][gen])
+                FitTemp.append((Ht[index][gen]-Hi[index][gen])/Ht[index][gen])
+            Fis.append(FisTemp)
+            Fst.append(FstTemp)
+            Fit.append(FitTemp)
+
+    print Fst
 
 
 
