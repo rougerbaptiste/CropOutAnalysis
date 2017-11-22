@@ -94,22 +94,21 @@ for folder in FOLDERS: # this will go through all subfolders
             NMeta.append(nMeta)
 
         # we mean the indices of the markers for every generation
-        for pop in range(0, POP_NB):
-            HexpPop = [Replicate, pop]
-            HobsPop = [Replicate, pop]
-            for gen in range(3, len(Hexp[1][:])):
-                hexpPop = 0
-                hobsPop = 0
-                for marker in range(0, MARKERS):
-                    index = MARKERS * pop + marker
-                    hexpPop += Hexp[index][gen]/(len(Hexp[1][:])-3)
-                    hobsPop += Hobs[index][gen]/(len(Hobs[1][:])-3)
-                HexpPop.append(hexpPop)
-                HobsPop.append(hobsPop)
-            HexpMeta.append(HexpPop)
-            HobsMeta.append(HobsPop)
+        # for pop in range(0, POP_NB):
+            # HexpPop = [Replicate, pop]
+            # HobsPop = [Replicate, pop]
+            # for gen in range(3, len(Hexp[1][:])):
+                # hexpPop = 0
+                # hobsPop = 0
+                # for marker in range(0, MARKERS):
+                    # index = MARKERS * pop + marker
+                    # hexpPop += Hexp[index][gen]/(len(Hexp[1][:])-3)
+                    # hobsPop += Hobs[index][gen]/(len(Hobs[1][:])-3)
+                # HexpPop.append(hexpPop)
+                # HobsPop.append(hobsPop)
+            # HexpMeta.append(HexpPop)
+            # HobsMeta.append(HobsPop)
 
-        # print SubTable
         # we compute pBar and qBar
         for marker in range(0, MARKERS):
             pBarTemp = [Replicate, marker]
@@ -120,9 +119,6 @@ for folder in FOLDERS: # this will go through all subfolders
                 sumN = 0
                 for pop in range(0, POP_NB):
                     index = COMBINATIONS*(marker + MARKERS*pop)
-                    # print index, gen
-                    # print N[index][gen]
-                    # print N[index+1][gen]
                     sumP += 2*float(SubTable[index][gen]) + float(SubTable[index+1][gen])
                     sumQ += 2*float(SubTable[index+2][gen]) + float(SubTable[index+1][gen])
 
@@ -131,17 +127,10 @@ for folder in FOLDERS: # this will go through all subfolders
 
                 pBarTemp.append(sumP/sumN)
                 qBarTemp.append(sumQ/sumN)
-                # print sumP/sumN + sumQ/sumN
             pBar.append(pBarTemp)
             qBar.append(qBarTemp)
-            # print pBar
-        # print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-        # print N
-        # we compute Hi
-        # for pop in range(0, POP_NB):
-            # for marker in range(0, MARKERS):
-                # for gen in range(0, len(HobsPop[1][:]))
-                    # print
+
+    # we compute Hi and Hs
     Hi = []
     Hs = []
     for replicate in range(0, REPLICATES):
@@ -175,27 +164,37 @@ for folder in FOLDERS: # this will go through all subfolders
 
     Fis = []
     Fst = []
-    Fit = []
+    # Fit = []
     for replicate in range(0, REPLICATES):
         for marker in range(0, MARKERS):
             FisTemp = [replicate, marker]
             FstTemp = [replicate, marker]
-            FitTemp = [replicate, marker]
+            # FitTemp = [replicate, marker]
             index = marker + MARKERS*replicate
             for gen in range(2, len(Hs[1][:])):
                 FisTemp.append((Hs[index][gen]-Hi[index][gen])/Hs[index][gen])
                 FstTemp.append((Ht[index][gen]-Hs[index][gen])/Ht[index][gen])
-                FitTemp.append((Ht[index][gen]-Hi[index][gen])/Ht[index][gen])
+                # FitTemp.append((Ht[index][gen]-Hi[index][gen])/Ht[index][gen])
             Fis.append(FisTemp)
             Fst.append(FstTemp)
-            Fit.append(FitTemp)
+            # Fit.append(FitTemp)
 
-    print Fst
+    FisMean = []
+    FstMean = []
 
+    for replicate in range(0, REPLICATES):
+        FisMeanTemp = [replicate]
+        FstMeanTemp = [replicate]
+        for gen in range(2, len(Fis[1][:])):
+            meanFis = 0
+            meanFst = 0
+            for markers in range(0, MARKERS):
+                index = marker + MARKERS*replicate
+                meanFis += Fis[index][gen]/MARKERS
+                meanFst += Fst[index][gen]/MARKERS
+            FisMeanTemp.append(meanFis)
+            FstMeanTemp.append(meanFst)
+        FisMean.append(FisMeanTemp)
+        FstMean.append(FstMeanTemp)
 
-
-
-
-
-
-    # print NMeta
+    # print FstMean
