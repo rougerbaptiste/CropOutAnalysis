@@ -78,9 +78,48 @@ for folder in FOLDERS: # this will go through all subfolders
                 # we store Hobs per pop and marker in the global Hobs, as well as Hexp and N
                 Hobs.append(HobsPopMark)
                 Hexp.append(HexpPopMark)
+                # print HexpPopMark
                 N.append(NPopMark)
 
                 i += COMBINATIONS
+        print Hexp
+        # j = 0
+        HexpMeta = []
+        HobsMeta = []
         for pop in range(0, POP_NB):
-            for marker in range(0, MARKERS):
-                print str(pop) + " " + str(marker) + "\n"
+            HexpPop = [Replicate, pop]
+            HobsPop = [Replicate, pop]
+            for gen in range(3, len(Hexp[1][:])):
+                hexpPop = 0
+                hobsPop = 0
+                for marker in range(0, MARKERS):
+                    index = MARKERS * pop + marker
+                    hexpPop += Hexp[index][gen]/(len(Hexp[1][:])-3)
+                    hobsPop += Hobs[index][gen]/(len(Hobs[1][:])-3)
+                HexpPop.append(hexpPop)
+                HobsPop.append(hobsPop)
+            HexpMeta.append(HexpPop)
+            HobsMeta.append(HobsPop)
+            print HobsMeta
+
+
+
+        # for pop in range(0, POP_NB):
+            # # print "Pop : " + str(pop)
+            # for marker in range(0, MARKERS):
+                # # print "Gen : " + str(gen)
+                # hexpPop = 0
+                # # print Hexp[j][:]
+                # for gen in range(3, len(Hexp[1][:])):
+                    # # print "Marker : " + str(marker)
+                    # # print str(j) + " " + str(gen) + "\n"
+                    # # print Hexp[j][gen]
+                    # hexpPop += Hexp[j][gen]/(len(Hexp[1][:]) - 3)
+                    # # print HexpPop
+                # j += 1
+
+
+        # for pop in range(0, POP_NB):
+            # print "Pop : " + str(pop)
+            # for marker in range(0, MARKERS):
+                # print Hexp[3]
