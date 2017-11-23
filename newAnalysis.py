@@ -11,6 +11,7 @@ I used this website for the formulas : http://www.uwyo.edu/dbmcd/popecol/maylect
 """
 
 import sys
+import matplotlib.pyplot as plt
 from os import listdir
 from os.path import isfile, join
 from statistics import mean, pvariance
@@ -67,13 +68,15 @@ for Replicate in range(0, REPLICATES): # this loop will examinate all replicates
                 HsLocTemp.append(hsloc)
                 hobsloc = float(PopMarkTable[1][gen])/float(N)
                 HobsLocTemp.append(hobsloc)
-                fisloc = 1-(hobsloc/(2*pL*qL))
+                try:
+                    fisloc = 1-(hobsloc/(2*pL*qL))
+                except:
+                    fisloc = 1
                 FisLocTemp.append(fisloc)
             HsLoc.append(HsLocTemp)
             HobsLoc.append(HobsLocTemp)
             FisLoc.append(FisLocTemp)
             i += COMBINATIONS
-
     for marker in range(0, NB_SELEC): # for the selected marker
         HtLocSelTemp = [Replicate, marker]
         for gen in range(4, len(SubTable[1][:])):
@@ -105,6 +108,7 @@ for Replicate in range(0, REPLICATES): # this loop will examinate all replicates
                         float(SubTable[index+2][gen]))
             HtLocNSelTemp.append(1-(pow((sumP/sumN), 2) + pow((sumQ/sumN), 2)))
         HtLocNSel.append(HtLocNSelTemp)
+
 
 
 
@@ -219,16 +223,16 @@ for Replicate in range(0, REPLICATES):
 
     HsSelBarMean.append(HsSelBarMeanRep)
     HsSelBarVar.append(HsSelBarVarRep)
-    HsNSelBarMean.append(HsSelBarMeanRep)
-    HsNSelBarVar.append(HsSelBarVarRep)
+    HsNSelBarMean.append(HsNSelBarMeanRep)
+    HsNSelBarVar.append(HsNSelBarVarRep)
     HobsSelBarMean.append(HobsSelBarMeanRep)
     HobsSelBarVar.append(HobsSelBarVarRep)
-    HobsNSelBarMean.append(HobsSelBarMeanRep)
-    HobsNSelBarVar.append(HobsSelBarVarRep)
+    HobsNSelBarMean.append(HobsNSelBarMeanRep)
+    HobsNSelBarVar.append(HobsNSelBarVarRep)
     FisSelBarMean.append(FisSelBarMeanRep)
     FisSelBarVar.append(FisSelBarVarRep)
-    FisNSelBarMean.append(FisSelBarMeanRep)
-    FisNSelBarVar.append(FisSelBarVarRep)
+    FisNSelBarMean.append(FisNSelBarMeanRep)
+    FisNSelBarVar.append(FisNSelBarVarRep)
 
 # We mean HtLocSel and HtLocNSel for the markers
 HtSel = []
@@ -237,14 +241,16 @@ HtNSel = []
 for replicate in range(0, REPLICATES):
     HtSelTemp = [replicate]
     HtNSelTemp = [replicate]
-    for gen in range(2, len(HtLocSel[1][:])):
+    for gen in range(2, len(HtLocNSel[1][:])):
+        
         meanHtSel = 0
         meanHtNSel = 0
-        for marker in range(0, NB_SELEC):
-            index = marker + NB_SELEC*replicate
-            # print marker, replicat
-            meanHtSel += HtLocSel[index][gen]/NB_SELEC
-        HtSelTemp.append(meanHtSel)
+        if NB_SELEC >=1:
+            for marker in range(0, NB_SELEC):
+                index = marker + NB_SELEC*replicate
+                # print marker, replicat
+                meanHtSel += HtLocSel[index][gen]/NB_SELEC
+            HtSelTemp.append(meanHtSel)
         for marker in range(0, (MARKERS-NB_SELEC)):
             index = marker + (MARKERS-NB_SELEC)*replicate
             meanHtNSel += HtLocNSel[index][gen]/(MARKERS-NB_SELEC)
@@ -273,9 +279,38 @@ for replicate in range(0, REPLICATES):
         GstSel.append(GstSelTemp)
 
 
+
+print(GstSel)
 ####
 # Graph part
 #
+absc = list(range(0,len(HtNSel[1][1:])))
+plt.subplot(2,3,1)
+plt.plot(absc, GstSel[0][1:], absc, GstSel[1][1:], absc, GstSel[2][1:])
+plt.title("Gst Sel")
+
+plt.subplot(2,3,4)
+plt.plot(absc, GstNSel[0][1:], absc, GstNSel[1][1:], absc, GstNSel[2][1:])
+plt.title("Gst NSel")
+
+plt.subplot(2,3,2)
+plt.plot(absc, HsSelBarMean[0][1:], absc, HsSelBarMean[1][1:], absc, HsSelBarMean[2][1:])
+plt.title("Hs Sel")
+
+plt.subplot(2,3,5)
+plt.plot(absc, HsNSelBarMean[0][1:], absc, HsNSelBarMean[1][1:], absc, HsNSelBarMean[2][1:])
+plt.title("Hs NSel")
+
+plt.subplot(2,3,3)
+plt.plot(absc, HobsSelBarMean[0][1:], absc, HobsSelBarMean[1][1:], absc, HobsSelBarMean[2][1:])
+plt.title("Hobs Sel")
+
+plt.subplot(2,3,6)
+plt.plot(absc, HobsNSelBarMean[0][1:], absc, HobsNSelBarMean[1][1:], absc, HobsNSelBarMean[2][1:])
+plt.title("Hobs NSel")
+
+
+plt.show()
 
 # print HobsNSelBarMean
 FILE.close()
