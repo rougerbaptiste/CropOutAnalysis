@@ -10,12 +10,12 @@ I used this website for the formulas : http://www.uwyo.edu/dbmcd/popecol/maylect
 @author: Baptiste Rouger
 """
 
+import sys
 from os import listdir
 from os.path import isfile, join
-# from numpy import shape
 
 #Path of the folder containing the result folders
-PATH = "/home/baptiste/Bureau/OutTest/"
+PATH = sys.argv[1]
 
 REPLICATES = 10
 POP_NB = 100
