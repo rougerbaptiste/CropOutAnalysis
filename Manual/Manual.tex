@@ -1,0 +1,32 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+%\usepackage[french]{babel}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+%\usepackage{graphicx}
+%\usepackage{subcaption}
+%\usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+
+\title{Manual for Analysis scripts of \textsc{CropMetaPop} Sensibility Analysis}
+\author{Baptiste \textsc{Rouger}}
+\begin{document}
+\maketitle
+\section{General purpose}
+\section{List of the files}
+\begin{itemize}
+        \item \textbf{expPlan.R} Script that generates the experiment plan
+        \item \textbf{setGenExpPlanA.py} Script that uses the experiment plan (5 parameters) for experiment A (drift + selection)
+        \item \textbf{setGenExpPlanB.py} Script that uses the experiment plan (9 parameters) for experiment B (drift + selection + colonisation)
+        \item \textbf{setGenExpPlanC.py} Script that uses the experiment plan (9 parameters) for experiment C (drift + selection + migration)
+\end{itemize}
+
+\section{Protocol}
+\begin{enumerate}
+        \item Modify the file \textbf{expPlan.R} to the desired number of parameters and levels of parameters depending on the experiment. You can also modify the name of the output file (MyData.csv by default).
+    \item Launch \textbf{expPlan.R} using \texttt{Rscript expPlan.R}. It creates the file containing the fractional experiment plan.
+    \item Launch the python script corresponding to the experiment after modifying the name of the input file containing the experiment plan (MyData.csv) using \texttt{python setGenExpPlan}X\texttt{.py} with X the experiment to create.
+    \item This creates a set of settings files for the \textsc{CropMetaPop} model (ending with \textsc{.set}), along with a file called \textbf{launcher} that contains the commands to launch the experiments using \texttt{condor\_submit}, and a \textbf{launcherR} file that contains the corresponding command to launch the analysis using \texttt{condor\_submit}.
+\end{enumerate}
+
+\end{document}
