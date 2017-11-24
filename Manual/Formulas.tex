@@ -13,34 +13,34 @@
 \begin{document}
 \maketitle
 
-The script has been to work with the GenotypeMonoLocus.csv file produced by \textsc{CropMetaPop}. It works with $2$ alleles for each gene so the formulas presented here are for 2 alleles only.\\
+The script has been to work with the GenotypeMono.csv file produced by \textsc{CropMetaPop}. It works with $2$ alleles for each gene so the formulas presented here are for 2 alleles only.\\
 We computed the indices of the marker under selection and under no selection separately but with the same formulas.
 
 \section{Locus level}
 \subsection{Hs}
-\subsubsection{For each locus : $Hs_l$}
+\subsubsection{For each locus: $Hs_l$}
 \[ Hs_l = 1 - (p_l^2 - q_l^2) \]
 
-With the following formulas for $p_l$ and $q_l$ :
+With the following formulas for $p_l$ and $q_l$:
 \[ p_l = \frac{2N_{0/0} + N_{0/1}}{2N}\]
 \[ q_l = \frac{N_{0/1} + 2N_{1/1}}{2N}\]
 $N_{0/0}$ represents the number of homozygotes individuals 0/0, $N_{1/1}$ the number of homozygotes 1/1, $N_{0/1}$ the number of heterozygotes, and $N$ the total number of individuals.
-\subsubsection{Mean of the loci : $Hs$}
+\subsubsection{Mean of the loci: $Hs$}
 \[ Hs = \frac{1}{L}\sum_{l=1}^{L} Hs_l \]
 With $L$ the number of locus (under selection or under no selection)
 
 \subsection{Hobs}
-\subsubsection{For each locus : $Hobs_l$}
+\subsubsection{For each locus: $Hobs_l$}
 \[ Hobs_l = \frac{ N_{0/1} }{N} \]
 $N_{0/1}$ the number of heterozygotes and $N$ the total number of individuals.
-\subsubsection{Mean of the loci : $Hobs$}
+\subsubsection{Mean of the loci: $Hobs$}
 \[ Hobs = \frac{1}{L}\sum_{l=1}{L} Hobs_l\]
 With $L$ the number of locus (under selection or under no selection)
 
 \subsection{Fis}
-\subsubsection{For each locus : $Fis_l$}
+\subsubsection{For each locus: $Fis_l$}
 \[ Fis_l = 1- \frac{Hobs_l}{2p_l q_l}\]
-\subsubsection{Mean of the loci : $Fis$}
+\subsubsection{Mean of the loci: $Fis$}
 \[Fis = \frac{1}{L}\sum_{l=1}^L Fis_l\]
 With $L$ the number of locus (under selection or under no selection).
 
@@ -63,7 +63,7 @@ We also compute the variance of $Fis$ with the \texttt{statistics.py} library.
 \subsection{Ht}
 \subsubsection{Ht for each locus}
 \[ Ht_l = 1-(\overline{p}_l^2 + \overline{q}_l^2) \]
-With the following formulas for $\overline{p}_l$ and $\overline{q}_l$ :
+With the following formulas for $\overline{p}_l$ and $\overline{q}_l$:
 \[ \overline{p}_l = \frac{1}{S}\sum_{s=1}^{S} p_l \]
 \[ \overline{q}_l = \frac{1}{S}\sum_{s=1}^{S} q_l \]
 With $S$ the number of populations.
