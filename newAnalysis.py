@@ -280,37 +280,39 @@ for replicate in range(0, REPLICATES):
 
 
 
-print(GstSel)
+# print(GstSel)
+
+
 ####
 # Graph part
 #
-absc = list(range(0,len(HtNSel[1][1:])))
-plt.subplot(2,3,1)
-plt.plot(absc, GstSel[0][1:], absc, GstSel[1][1:], absc, GstSel[2][1:])
-plt.title("Gst Sel")
+# absc = list(range(0,len(HtNSel[1][1:])))
+# plt.subplot(2,3,1)
+# plt.plot(absc, GstSel[0][1:], absc, GstSel[1][1:], absc, GstSel[2][1:])
+# plt.title("Gst Sel")
 
-plt.subplot(2,3,4)
-plt.plot(absc, GstNSel[0][1:], absc, GstNSel[1][1:], absc, GstNSel[2][1:])
-plt.title("Gst NSel")
+# plt.subplot(2,3,4)
+# plt.plot(absc, GstNSel[0][1:], absc, GstNSel[1][1:], absc, GstNSel[2][1:])
+# plt.title("Gst NSel")
 
-plt.subplot(2,3,2)
-plt.plot(absc, HsSelBarMean[0][1:], absc, HsSelBarMean[1][1:], absc, HsSelBarMean[2][1:])
-plt.title("Hs Sel")
+# plt.subplot(2,3,2)
+# plt.plot(absc, HsSelBarMean[0][1:], absc, HsSelBarMean[1][1:], absc, HsSelBarMean[2][1:])
+# plt.title("Hs Sel")
 
-plt.subplot(2,3,5)
-plt.plot(absc, HsNSelBarMean[0][1:], absc, HsNSelBarMean[1][1:], absc, HsNSelBarMean[2][1:])
-plt.title("Hs NSel")
+# plt.subplot(2,3,5)
+# plt.plot(absc, HsNSelBarMean[0][1:], absc, HsNSelBarMean[1][1:], absc, HsNSelBarMean[2][1:])
+# plt.title("Hs NSel")
 
-plt.subplot(2,3,3)
-plt.plot(absc, HobsSelBarMean[0][1:], absc, HobsSelBarMean[1][1:], absc, HobsSelBarMean[2][1:])
-plt.title("Hobs Sel")
+# plt.subplot(2,3,3)
+# plt.plot(absc, HobsSelBarMean[0][1:], absc, HobsSelBarMean[1][1:], absc, HobsSelBarMean[2][1:])
+# plt.title("Hobs Sel")
 
-plt.subplot(2,3,6)
-plt.plot(absc, HobsNSelBarMean[0][1:], absc, HobsNSelBarMean[1][1:], absc, HobsNSelBarMean[2][1:])
-plt.title("Hobs NSel")
+# plt.subplot(2,3,6)
+# plt.plot(absc, HobsNSelBarMean[0][1:], absc, HobsNSelBarMean[1][1:], absc, HobsNSelBarMean[2][1:])
+# plt.title("Hobs NSel")
 
 
-plt.show()
+# plt.show()
 
 # print HobsNSelBarMean
 FILE.close()
