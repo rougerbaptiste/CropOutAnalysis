@@ -242,10 +242,9 @@ for replicate in range(0, REPLICATES):
     HtSelTemp = [replicate]
     HtNSelTemp = [replicate]
     for gen in range(2, len(HtLocNSel[1][:])):
-        
         meanHtSel = 0
         meanHtNSel = 0
-        if NB_SELEC >=1:
+        if NB_SELEC >= 1:
             for marker in range(0, NB_SELEC):
                 index = marker + NB_SELEC*replicate
                 # print marker, replicat
@@ -283,13 +282,92 @@ for replicate in range(0, REPLICATES):
 # print(GstSel)
 
 
-####
-# Graph part
+#####
+# Mean section
 #
-# absc = list(range(0,len(HtNSel[1][1:])))
-# plt.subplot(2,3,1)
-# plt.plot(absc, GstSel[0][1:], absc, GstSel[1][1:], absc, GstSel[2][1:])
+
+meanGstSel = []
+meanGstNSel = []
+meanHsSel = []
+meanHsNSel = []
+meanHobsSel = []
+meanHobsNSel = []
+meanFisSel = []
+meanFisNSel = []
+
+for gen in range(1, len(GstNSel[1][:])):
+    mGstSelTemp = 0
+    mGstNSelTemp = 0
+    mHsSelTemp = 0
+    mHsNSelTemp = 0
+    mHobsSelTemp = 0
+    mHobsNSelTemp = 0
+    mFisSelTemp = 0
+    mFisNSelTemp = 0
+    for rep in range(0, REPLICATES):
+        mGstNSelTemp += GstNSel[rep][gen]/REPLICATES
+        mHsNSelTemp += HsNSelBarMean[rep][gen]/REPLICATES
+        mHobsNSelTemp += HobsNSelBarMean[rep][gen]/REPLICATES
+        mFisNSelTemp += FisNSelBarMean[rep][gen]/REPLICATES
+        if NB_SELEC >= 1:
+            mGstSelTemp += GstSel[rep][gen]/REPLICATES
+            mHsSelTemp += HsSelBarMean[rep][gen]/REPLICATES
+            mHobsSelTemp += HobsSelBarMean[rep][gen]/REPLICATES
+            mFisSelTemp += FisSelBarMean[rep][gen]/REPLICATES
+    meanGstNSel.append(mGstNSelTemp)
+    meanHsNSel.append(mHsNSelTemp)
+    meanHobsNSel.append(mHobsNSelTemp)
+    meanFisNSel.append(mFisNSelTemp)
+    if NB_SELEC >= 1:
+        meanGstSel.append(mGstSelTemp)
+        meanHsSel.append(mHsSelTemp)
+        meanHobsSel.append(mHobsSelTemp)
+        meanFisSel.append(mFisSelTemp)
+
+lineToWrite = ','.join(str(i) for i in meanGstSel) + '\n' + ','.join(str(i) for i in meanGstNSel) +\
+        '\n' + ','.join(str(i) for i in meanHsSel) + '\n' + ','.join(str(i) for i in meanHsNSel) +\
+        '\n' + ','.join(str(i) for i in meanHobsSel) + '\n' + ','.join(str(i) for i in meanHobsNSel) +\
+        '\n' + ','.join(str(i) for i in meanFisSel) + '\n' + ','.join(str(i) for i in meanFisNSel)
+
+FILE.close()
+
+PATHTOFILEWRITE = PATH + "/" + PATH.split("/")[-1] + ".res"
+FILEWRITE = open(PATHTOFILEWRITE, "w")
+FILEWRITE.write(lineToWrite)
+FILEWRITE.close()
+
+#Graphs
+
+# absc = list(range(0, len(HtNSel[1][1:])))
+# plt.subplot(2, 3, 1)
+# plt.plot(absc, meanGstSel)
+# plt.ylim([0, 0.2])
 # plt.title("Gst Sel")
+
+# plt.subplot(2, 3, 4)
+# plt.plot(absc, meanGstNSel)
+# plt.ylim([0, 0.2])
+# plt.title("Gst NSel")
+
+# plt.subplot(2, 3, 2)
+# plt.plot(absc, meanHsSel)
+# plt.ylim([0, 0.5])
+# plt.title("Hs Sel")
+
+# plt.subplot(2, 3, 5)
+# plt.plot(absc, meanHsNSel)
+# plt.ylim([0.3, 0.5])
+# plt.title("Hs NSel")
+
+# plt.subplot(2, 3, 3)
+# plt.plot(absc, meanHobsSel)
+# plt.ylim([0, 0.5])
+# plt.title("Hobs Sel")
+
+# plt.subplot(2, 3, 6)
+# plt.plot(absc, meanHobsNSel)
+# plt.ylim([0.3, 0.5])
+# plt.title("Hobs NSel")
 
 # plt.subplot(2,3,4)
 # plt.plot(absc, GstNSel[0][1:], absc, GstNSel[1][1:], absc, GstNSel[2][1:])
@@ -315,4 +393,3 @@ for replicate in range(0, REPLICATES):
 # plt.show()
 
 # print HobsNSelBarMean
-FILE.close()
