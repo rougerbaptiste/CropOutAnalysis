@@ -223,9 +223,12 @@ GstNSel = []
 for replicate in range(0, REPLICATES):
     GstNSelTemp = [replicate]
     for gen in range(1, len(HtNSel[1][:])): #not selected
-        GstNSelTemp.append(\
+        try:
+            GstNSelTemp.append(\
                 (np.nansum([HtNSel[replicate][gen],-HsNSelBarMean[replicate][gen]]))/HtNSel[replicate][gen]\
                 )
+        except:
+            GstNSelTemp.append(0)
     GstNSel.append(GstNSelTemp)
 
 FILE.close()
