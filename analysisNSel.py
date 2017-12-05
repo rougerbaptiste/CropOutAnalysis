@@ -83,24 +83,6 @@ for Replicate in range(0, REPLICATES): # this loop will examinate all replicates
             HobsLoc.append(HobsLocTemp)
             FisLoc.append(FisLocTemp)
             i += COMBINATIONS
-    # for marker in range(0, NB_SELEC): # for the selected marker
-    #     HtLocSelTemp = [Replicate, marker]
-    #     for gen in range(4, len(SubTable[1][:])):
-    #         if NB_SELEC == 0:
-    #             for pop in range()
-    #             HtLocSelTemp.append(0)
-    #         else:
-    #             sumP = 0
-    #             sumQ = 0
-    #             sumN = 0
-    #             for pop in range(0, POP_NB):
-    #                 index = COMBINATIONS*(marker + MARKERS*pop)
-    #                 sumP += 2*float(SubTable[index][gen]) + float(SubTable[index+1][gen])
-    #                 sumQ += 2*float(SubTable[index+2][gen]) + float(SubTable[index+1][gen])
-    #                 sumN += 2*(float(SubTable[index][gen]) + float(SubTable[index+1][gen]) +\
-    #                         float(SubTable[index+2][gen]))
-    #             HtLocSelTemp.append(1-(pow((sumP/sumN), 2) + pow((sumQ/sumN), 2)))
-    #     HtLocSel.append(HtLocSelTemp)
     for marker in range(NB_SELEC, MARKERS):
         HtLocNSelTemp = [Replicate, marker]
         for gen in range(4, len(SubTable[1][:])):
@@ -117,14 +99,8 @@ for Replicate in range(0, REPLICATES): # this loop will examinate all replicates
                 HtLocNSelTemp.append(1-(pow((sumP/sumN), 2) + pow((sumQ/sumN), 2)))
             else:
                 HtLocNSelTemp.append(np.nan)
-
         HtLocNSel.append(HtLocNSelTemp)
 
-#
-#
-#
-#
-#
 # We now mean the indices for selected and not selected loci
 HsNSel = []
 HobsNSel = []
@@ -150,10 +126,7 @@ for Replicate in range(0, REPLICATES):
         HobsNSel.append(HobsNSelTemp)
         FisNSel.append(FisNSelTemp)
 
-# print(HsNSel)
-#
 ## We now mean and compute the variance for the pops
-
 HsNSelBarMean = []
 HsNSelBarVar = []
 HobsNSelBarMean = []
@@ -194,22 +167,12 @@ for Replicate in range(0, REPLICATES):
     FisNSelBarMean.append(FisNSelBarMeanRep)
     FisNSelBarVar.append(FisNSelBarVarRep)
 
-# print(HsNSelBarVar)
-
 # We mean HtLocSel and HtLocNSel for the markers
 HtNSel = []
-# print HtLocSel
 for replicate in range(0, REPLICATES):
     HtNSelTemp = [replicate]
     for gen in range(2, len(HtLocNSel[1][:])):
-        # print(gen)
         meanHtNSel = []
-        # if NB_SELEC >= 1:
-        #     for marker in range(0, NB_SELEC):
-        #         index = marker + NB_SELEC*replicate
-        #         # print marker, replicat
-        #         meanHtSel += HtLocSel[index][gen]/NB_SELEC
-        #     HtSelTemp.append(meanHtSel)
         for marker in range(0, (MARKERS-NB_SELEC)):
             index = marker + (MARKERS-NB_SELEC)*replicate
             meanHtNSel.append(HtLocNSel[index][gen])
