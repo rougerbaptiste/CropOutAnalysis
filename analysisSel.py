@@ -55,7 +55,6 @@ for Replicate in range(0, REPLICATES): # this loop will examinate all replicates
         for marker in range(0, MARKERS): # we exminate all markers for all pops
             # we take subsets of the replicates to select only one marker at a time
             PopMarkTable = SubTable[i:(i+COMBINATIONS)][:]
-            # print PopMarkTable
             HsLocTemp = [Replicate, pop, marker]
             HobsLocTemp = [Replicate, pop, marker]
             FisLocTemp = [Replicate, pop, marker]
@@ -186,12 +185,14 @@ GstSel = []
 for replicate in range(0, REPLICATES):
     GstSelTemp = [replicate]
     for gen in range(1, len(HtSel[1][:])): #not selected
-        try:
-            GstSelTemp.append(\
-                (np.nansum([HtSel[replicate][gen],-HsSelBarMean[replicate][gen]]))/HtSel[replicate][gen]\
-                )
-        except:
+        # if np.isnan(HtSel[replicate][gen]) == True or np.isnan(HsSelBarMean[replicate][gen]) == True:
+            # print("hi")
+        if HtSel[replicate][gen] == 0:
             GstSelTemp.append(0)
+        else:
+            GstSelTemp.append(\
+                (HtSel[replicate][gen]-HsSelBarMean[replicate][gen])/HtSel[replicate][gen]\
+            )
     GstSel.append(GstSelTemp)
 
 FILE.close()
