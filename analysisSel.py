@@ -15,7 +15,7 @@ import numpy as np
 # import matplotlib.pyplot as plt
 # from os import listdir
 # from os.path import isfile, join
-from statistics import mean, pvariance
+# from statistics import mean, pvariance
 
 #Path of the folder containing the result folders
 PATH = sys.argv[1]
@@ -114,7 +114,7 @@ for Replicate in range(0, REPLICATES):
             meanHsSel = []
             meanHobsSel = []
             meanFisSel = []
-            for marker in range(NB_SELEC, MARKERS): # we compute the mean for not selected markers
+            for marker in range(0, NB_SELEC): # we compute the mean for selected markers
                 index = marker + MARKERS*(pop + POP_NB*Replicate)
                 meanHsSel.append(HsLoc[index][gen])
                 meanHobsSel.append(HobsLoc[index][gen])
