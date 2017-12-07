@@ -16,6 +16,7 @@ HtTot = ""
 HsTot = ""
 HobsTot = ""
 FisTot = ""
+ExtTot = ""
 for folder in FOLDERS:
     FILES = [fi for fi in listdir(join(PATH, folder)) if isfile(PATH + folder + "/" + fi) and ".res" in fi]
     for fichier in FILES:
@@ -39,6 +40,10 @@ for folder in FOLDERS:
             fileFlux = open(PATH + folder + "/" + fichier, "r")
             FisTot += fileFlux.read()
             fileFlux.close()
+        if "Ext" in fichier:
+            fileFlux = open(PATH + folder + "/" + fichier, "r")
+            ExtTot += fileFlux.read()
+            fileFlux.close()
 
 
 if "NSel" in fichier:
@@ -57,6 +62,9 @@ if "NSel" in fichier:
     fileWriteFis = open(PATH+"FisTotNSel.csv", "w")
     fileWriteFis.write(FisTot)
     fileWriteFis.close()
+    fileWriteExt = open(PATH+"ExtTotNSel.csv", "w")
+    fileWriteExt.write(ExtTot)
+    fileWriteExt.close()
 else:
     fileWriteGst = open(PATH+"GstTotSel.csv", "w")
     fileWriteGst.write(GstTot)
@@ -73,3 +81,6 @@ else:
     fileWriteFis = open(PATH+"FisTotSel.csv", "w")
     fileWriteFis.write(FisTot)
     fileWriteFis.close()
+    fileWriteExt = open(PATH+"ExtTotSel.csv", "w")
+    fileWriteExt.write(ExtTot)
+    fileWriteExt.close()

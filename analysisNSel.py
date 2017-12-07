@@ -61,13 +61,13 @@ for Replicate in range(0, REPLICATES): # this loop will examinate all replicates
             for gen in range(4, len(PopMarkTable[1][:])):
                 N = float(PopMarkTable[0][gen]) + float(PopMarkTable[1][gen]) +\
                         float(PopMarkTable[2][gen])
-                pL = (2*float(PopMarkTable[0][gen]) + float(PopMarkTable[1][gen]))/(2*N)
-                qL = (float(PopMarkTable[1][gen]) + 2*float(PopMarkTable[2][gen]))/(2*N)
-                if pL == 0 and qL == 0:
+                if N == 0:
                     hsloc = np.nan
                     hobsloc = np.nan
                     fisloc = np.nan
                 else:
+                    pL = (2*float(PopMarkTable[0][gen]) + float(PopMarkTable[1][gen]))/(2*N)
+                    qL = (float(PopMarkTable[1][gen]) + 2*float(PopMarkTable[2][gen]))/(2*N)
                     hsloc = 1-(pow(pL, 2) + pow(qL, 2))
                     hobsloc = float(PopMarkTable[1][gen])/float(N)
 
@@ -104,12 +104,15 @@ for Replicate in range(0, REPLICATES): # this loop will examinate all replicates
 HsNSel = []
 HobsNSel = []
 FisNSel = []
+ExtNSel = []
 for Replicate in range(0, REPLICATES):
     for pop in range(0, POP_NB):
         HsNSelTemp = [Replicate, pop]
         HobsNSelTemp = [Replicate, pop]
         FisNSelTemp = [Replicate, pop]
+        popExtTemp = [Replicate, pop]
         for gen in range(3, len(HsLoc[1][:])):
+            popExtGen = False
             meanHsNSel = []
             meanHobsNSel = []
             meanFisNSel = []
@@ -118,12 +121,20 @@ for Replicate in range(0, REPLICATES):
                 meanHsNSel.append(HsLoc[index][gen])
                 meanHobsNSel.append(HobsLoc[index][gen])
                 meanFisNSel.append(FisLoc[index][gen])
-            HsNSelTemp.append(np.nanmean(meanHsNSel))
-            HobsNSelTemp.append(np.nanmean(meanHobsNSel))
-            FisNSelTemp.append(np.nanmean(meanFisNSel))
+            if np.nansum(meanHsNSel) != 0:
+                HsNSelTemp.append(np.nanmean(meanHsNSel))
+                HobsNSelTemp.append(np.nanmean(meanHobsNSel))
+                FisNSelTemp.append(np.nanmean(meanFisNSel))
+                popExtTemp.append(0)
+            else:
+                HsNSelTemp.append(np.nan)
+                HobsNSelTemp.append(np.nan)
+                FisNSelTemp.append(np.nan)
+                popExtTemp.append(1)
         HsNSel.append(HsNSelTemp)
         HobsNSel.append(HobsNSelTemp)
         FisNSel.append(FisNSelTemp)
+        ExtNSel.append(popExtTemp)
 
 ## We now mean and compute the variance for the pops
 HsNSelBarMean = []
@@ -132,6 +143,7 @@ HobsNSelBarMean = []
 HobsNSelBarVar = []
 FisNSelBarMean = []
 FisNSelBarVar = []
+ExtNSelTot = []
 
 for Replicate in range(0, REPLICATES):
     HsNSelBarMeanRep = [Replicate]
@@ -140,24 +152,36 @@ for Replicate in range(0, REPLICATES):
     HobsNSelBarVarRep = [Replicate]
     FisNSelBarMeanRep = [Replicate]
     FisNSelBarVarRep = [Replicate]
+    ExtNSelTotRep = [Replicate]
 
     for gen in range(2, len(HsNSel[1][:])):
         HsNSelMPop = []
         HobsNSelMPop = []
         FisNSelMPop = []
+        ExtMPop = []
 
         for pop in range(0, POP_NB):
             index = pop + POP_NB*Replicate
             HsNSelMPop.append(HsNSel[index][gen])
             HobsNSelMPop.append(HobsNSel[index][gen])
             FisNSelMPop.append(FisNSel[index][gen])
-
-        HsNSelBarMeanRep.append(np.nanmean(HsNSelMPop))
-        HsNSelBarVarRep.append(np.nanvar(HsNSelMPop))
-        HobsNSelBarMeanRep.append(np.nanmean(HobsNSelMPop))
-        HobsNSelBarVarRep.append(np.nanvar(HobsNSelMPop))
-        FisNSelBarMeanRep.append(np.nanmean(FisNSelMPop))
-        FisNSelBarVarRep.append(np.nanvar(FisNSelMPop))
+            ExtMPop.append(ExtNSel[index][gen])
+        if np.nansum(HsNSelMPop) != 0:
+            HsNSelBarMeanRep.append(np.nanmean(HsNSelMPop))
+            HsNSelBarVarRep.append(np.nanvar(HsNSelMPop))
+            HobsNSelBarMeanRep.append(np.nanmean(HobsNSelMPop))
+            HobsNSelBarVarRep.append(np.nanvar(HobsNSelMPop))
+            FisNSelBarMeanRep.append(np.nanmean(FisNSelMPop))
+            FisNSelBarVarRep.append(np.nanvar(FisNSelMPop))
+            ExtNSelTotRep.append(np.nansum(ExtMPop))
+        else:
+            HsNSelBarMeanRep.append(np.nan)
+            HsNSelBarVarRep.append(np.nan)
+            HobsNSelBarMeanRep.append(np.nan)
+            HobsNSelBarVarRep.append(np.nan)
+            FisNSelBarMeanRep.append(np.nan)
+            FisNSelBarVarRep.append(np.nan)
+            ExtNSelTotRep.append(sum(ExtMPop))
 
     HsNSelBarMean.append(HsNSelBarMeanRep)
     HsNSelBarVar.append(HsNSelBarVarRep)
@@ -165,6 +189,7 @@ for Replicate in range(0, REPLICATES):
     HobsNSelBarVar.append(HobsNSelBarVarRep)
     FisNSelBarMean.append(FisNSelBarMeanRep)
     FisNSelBarVar.append(FisNSelBarVarRep)
+    ExtNSelTot.append(ExtNSelTotRep)
 
 # We mean HtLocSel and HtLocNSel for the markers
 HtNSel = []
@@ -175,7 +200,10 @@ for replicate in range(0, REPLICATES):
         for marker in range(0, (MARKERS-NB_SELEC)):
             index = marker + (MARKERS-NB_SELEC)*replicate
             meanHtNSel.append(HtLocNSel[index][gen])
-        HtNSelTemp.append(np.nanmean(meanHtNSel))
+        if np.nansum(meanHtNSel) != 0:
+            HtNSelTemp.append(np.nanmean(meanHtNSel))
+        else:
+            HtNSelTemp.append(np.nan)
     HtNSel.append(HtNSelTemp)
 
 
@@ -191,7 +219,7 @@ for replicate in range(0, REPLICATES):
             GstNSelTemp.append(\
                 (HtNSel[replicate][gen]-HsNSelBarMean[replicate][gen])/HtNSel[replicate][gen]\
                 )
-        GstNSel.append(GstNSelTemp)
+    GstNSel.append(GstNSelTemp)
 
 FILE.close()
 
@@ -202,17 +230,20 @@ lineToWriteHt = ""
 lineToWriteHs = ""
 lineToWriteHobs = ""
 lineToWriteFis = ""
+lineToWriteExt = ""
 for replicate in range(0, REPLICATES):
     gstnsel = GstNSel[replicate][1:]
     htnsel = HtNSel[replicate][1:]
     hsnsel = HsNSelBarMean[replicate][1:]
     hobsnsel = HobsNSelBarMean[replicate][1:]
     fisnsel = FisNSelBarMean[replicate][1:]
+    extnsel = ExtNSelTot[replicate][1:]
     lineToWriteGst += ','.join(str(i) for i in gstnsel) + "\n"
     lineToWriteHt += ','.join(str(i) for i in htnsel) + "\n"
     lineToWriteHs += ','.join(str(i) for i in hsnsel) + "\n"
     lineToWriteHobs += ','.join(str(i) for i in hobsnsel) + "\n"
     lineToWriteFis += ','.join(str(i) for i in fisnsel) + "\n"
+    lineToWriteExt += ','.join(str(i/POP_NB) for i in extnsel) + "\n"
 
 FILEGST = open(PATH + "/GstNSel.res", "w")
 FILEGST.write(lineToWriteGst)
@@ -233,3 +264,7 @@ FILEHOBS.close()
 FILEFIS = open(PATH + "/FisNSel.res", "w")
 FILEFIS.write(lineToWriteFis)
 FILEFIS.close()
+
+FILEEXT = open(PATH + "/ExtNSel.res", "w")
+FILEEXT.write(lineToWriteExt)
+FILEEXT.close()
