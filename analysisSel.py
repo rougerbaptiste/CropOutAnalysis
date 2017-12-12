@@ -237,12 +237,50 @@ for replicate in range(0, REPLICATES):
     hobssel = HobsSelBarMean[replicate][1:]
     fissel = FisSelBarMean[replicate][1:]
     extsel = ExtSelTot[replicate][1:]
-    lineToWriteGst += ','.join(str(i) for i in gstsel) + "\n"
-    lineToWriteHt += ','.join(str(i) for i in htsel) + "\n"
-    lineToWriteHs += ','.join(str(i) for i in hssel) + "\n"
-    lineToWriteHobs += ','.join(str(i) for i in hobssel) + "\n"
-    lineToWriteFis += ','.join(str(i) for i in fissel) + "\n"
-    lineToWriteExt += ','.join(str(i/POP_NB) for i in extsel) + "\n"
+    for i in gstsel:
+        if np.isnan(i):
+            lineToWriteGst = lineToWriteGst + "0" + ','
+        else:
+            lineToWriteGst = lineToWriteGst + str(i) + ','
+    lineToWriteGst += "\n"
+    for i in htsel:
+        if np.isnan(i):
+            lineToWriteHt = lineToWriteHt + "0" + ','
+        else:
+            lineToWriteHt = lineToWriteHt + str(i) + ','
+    lineToWriteHt += "\n"
+    for i in hssel:
+        if np.isnan(i):
+            lineToWriteHs = lineToWriteHs + "0" + ','
+        else:
+            lineToWriteHs = lineToWriteHs + str(i) + ','
+    lineToWriteHs += "\n"
+    for i in hobssel:
+        if np.isnan(i):
+            lineToWriteHobs = lineToWriteHobs + "0" + ','
+        else:
+            lineToWriteHobs = lineToWriteHobs + str(i) + ','
+    lineToWriteHobs += "\n"
+    for i in fissel:
+        if np.isnan(i):
+            lineToWriteFis = lineToWriteFis + "0" + ','
+        else:
+            lineToWriteFis = lineToWriteFis + str(i) + ','
+    lineToWriteFis += "\n"
+    for i in extsel:
+        if np.isnan(i):
+            lineToWriteExt = lineToWriteExt + "0" + ','
+        else:
+            lineToWriteExt = lineToWriteExt + str(i) + ','
+    lineToWriteExt += "\n"
+
+
+    # lineToWriteGst += ','.join(str(i) for i in gstsel) + "\n"
+    # lineToWriteHt += ','.join(str(i) for i in htsel) + "\n"
+    # lineToWriteHs += ','.join(str(i) for i in hssel) + "\n"
+    # lineToWriteHobs += ','.join(str(i) for i in hobssel) + "\n"
+    # lineToWriteFis += ','.join(str(i) for i in fissel) + "\n"
+    # lineToWriteExt += ','.join(str(i/POP_NB) for i in extsel) + "\n"
 
 FILEGST = open(PATH + "/GstSel.res", "w")
 FILEGST.write(lineToWriteGst)
