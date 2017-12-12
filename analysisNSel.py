@@ -238,42 +238,48 @@ for replicate in range(0, REPLICATES):
     hobsnsel = HobsNSelBarMean[replicate][1:]
     fisnsel = FisNSelBarMean[replicate][1:]
     extnsel = ExtNSelTot[replicate][1:]
+    listGst = []
+    listHt = []
+    listHs = []
+    listHobs = []
+    listFis = []
+    listExt = []
     for i in gstnsel:
         if np.isnan(i):
-            lineToWriteGst = lineToWriteGst + "0" + ','
+            listGst.append("0")
         else:
-            lineToWriteGst = lineToWriteGst + str(i) + ','
-    lineToWriteGst += "\n"
+            listGst.append(str(i))
+    lineToWriteGst += ','.join(listGst) + "\n"
     for i in htnsel:
         if np.isnan(i):
-            lineToWriteHt = lineToWriteHt + "0" + ','
+            listHt.append("0")
         else:
-            lineToWriteHt = lineToWriteHt + str(i) + ','
-    lineToWriteHt += "\n"
+            listHt.append(str(i))
+    lineToWriteHt += ','.join(listHt) + "\n"
     for i in hsnsel:
         if np.isnan(i):
-            lineToWriteHs = lineToWriteHs + "0" + ','
+            listHs.append("0")
         else:
-            lineToWriteHs = lineToWriteHs + str(i) + ','
-    lineToWriteHs += "\n"
+            listHs.append(str(i))
+    lineToWriteHs += ','.join(listHs) + "\n"
     for i in hobsnsel:
         if np.isnan(i):
-            lineToWriteHobs = lineToWriteHobs + "0" + ','
+            listHobs.append("0")
         else:
-            lineToWriteHobs = lineToWriteHobs + str(i) + ','
-    lineToWriteHobs += "\n"
+            listHobs.append(str(i))
+    lineToWriteHobs += ','.join(listHobs) + "\n"
     for i in fisnsel:
         if np.isnan(i):
-            lineToWriteFis = lineToWriteFis + "0" + ','
+            listFis.append("0")
         else:
-            lineToWriteFis = lineToWriteFis + str(i) + ','
-    lineToWriteFis += "\n"
+            listFis.append(str(i))
+    lineToWriteFis += ','.join(listFis) + "\n"
     for i in extnsel:
         if np.isnan(i):
-            lineToWriteExt = lineToWriteExt + "0" + ','
+            listExt.append("0")
         else:
-            lineToWriteExt = lineToWriteExt + str(i) + ','
-    lineToWriteExt += "\n"
+            listExt.append(str(i))
+    lineToWriteExt += ','.join(listExt) + "\n"
 
 
     # lineToWriteGst += ','.join(str(i) for i in gstnsel) + "\n"
