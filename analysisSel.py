@@ -202,7 +202,7 @@ for replicate in range(0, REPLICATES):
         for marker in range(0, NB_SELEC):
             index = marker + NB_SELEC*replicate
             meanHtSel.append(HtLocSel[index][gen])
-            meanFisSel.append(FisNSel[index][gen])
+            meanFisSel.append(FisSel[index][gen])
         if np.nansum(meanHtSel) == 0 and np.nansum(meanFisSel) == 0:
             HtSelTemp.append(np.nan) 
         else:
