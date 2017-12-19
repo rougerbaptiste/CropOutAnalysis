@@ -13,8 +13,10 @@
 \begin{document}
 \maketitle
 \section{General purpose}
-This script is made to analyse the GenotypeMono.csv file produced by \textsc{CropMetaPop} and return several genetic indices: $\overline{H}s$, $\overline{H}obs$, $\overline{F}is$, $Ht$ and Gst.\\
-In a close future, it will put all these informations in an output file on which would be performed the sensibility analysis.\\
+These scripts are made to analyse the GenotypeMono.csv file produced by \textsc{CropMetaPop} and return several genetic indices: $\overline{H}s$, $\overline{H}obs$, $\overline{F}is$, $Ht$ and Gst.\\
+It outputs each of these indices in .res files.\\
+
+The script called \texttt{analysisNSel.py} analyses the neutral markers, while the script called \texttt{analysisSel.py} analyses the selected markers.\\
 
 It takes a few command-line parameters in input:
 \begin{enumerate}
@@ -25,11 +27,14 @@ It takes a few command-line parameters in input:
     \item the number of alleles of the markers
 
 \end{enumerate}
+
+Be careful, you cannot give to \texttt{analysisSel.py} a number of markers lower than 11!
+
 \section{Protocol}
 \begin{enumerate}
-        \item Get all the values for the parameters of the script (this step will be done automatically for the sensibility analysis by the \texttt{setGenExpPlanX.py} script that will create corresponding launcher file for the analysis)
-        \item Run the script using Python 3 (\texttt{python3 newAnalysis Path/to/Folder Replicates Populations Markers Alleles}) by replacing the parameters by their respective values
-        \item TO DO: The result file is created in the folder specified by the user
+        \item Get all the values for the parameters of the script (this step will be done automatically for the sensibility analysis by the \texttt{setGenExpPlanX*Sel.py} script that will create corresponding launcher file for the analysis)
+        \item Run the script using Python 3 (\texttt{python3 analysis*Sel.py Path/to/Folder Replicates Populations Markers Alleles}) by replacing the parameters by their respective values
+        \item The result files are created in the folder of the simulation
 \end{enumerate}
 
 \end{document}
